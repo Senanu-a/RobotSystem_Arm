@@ -75,6 +75,20 @@ class ColorTrackingPerception:
 
     def to_lab(self, frame_gb):
         return cv2.cvtColor(frame_gb, cv2.COLOR_BGR2LAB)
+    def getAreaMaxContour(contours):
+        contour_area_temp = 0
+        contour_area_max = 0
+        area_max_contour = None
+
+        for c in contours:  # iterate all contours
+            contour_area_temp = math.fabs(cv2.contourArea(c))
+            if contour_area_temp > contour_area_max:
+                contour_area_max = contour_area_temp
+                # only accept it as "valid" if area is large enough
+                if contour_area_temp > 300:
+                    area_max_contour = c
+
+        return area_max_contour, contour_area_max
 
     def segment_and_find_contour(self, frame_lab):
         # match original
